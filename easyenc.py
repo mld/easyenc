@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-# Author : Basil Kurian <basilkurian[at]gmail[dot]com>
+# Author      : Mikael Löfstrand
+# Inspired by : Basil Kurian <basilkurian[at]gmail[dot]com>
+# Home page   : https://github.com/mld/easyenc/
 
 import yaml
 import sys
@@ -8,10 +10,6 @@ host=sys.argv[1]
 
 db = open("db.yaml", "r")
 doc = yaml.load(db)
-
-#for k,v in doc.items():
-#  print k, "->", v
-#print "\n"
 
 environment = False
 classes = False
