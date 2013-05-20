@@ -1,0 +1,9 @@
+---
+default:
+  environment: unknown
+  class: roles::unknown
+test.example.com:
+  environment: dev
+  class: roles::dev::test
+another.example.com:
+  class: roles::some::role
