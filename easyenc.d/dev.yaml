@@ -1,0 +1,4 @@
+---
+environment: dev
+test.example.com: roles::dev::test
+test2.example.com: roles::dev:anothertest

@@ -1,0 +1,3 @@
+---
+environment: prod
+another.example.com: roles::some::role

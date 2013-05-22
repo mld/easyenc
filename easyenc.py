@@ -6,7 +6,12 @@
 import yaml
 import sys
 
-host=sys.argv[1]
+if sys.argc >= 3 and sys.argv[1] == '-f':
+  conf  = sys.argv[2]
+  host = sys.argv[3]
+elif sys.argc >= 1:
+  host = sys.argv[1]
+
 
 db = open("db.yaml", "r")
 doc = yaml.load(db)

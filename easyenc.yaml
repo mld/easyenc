@@ -1,0 +1,5 @@
+---
+dbdir: ./easyenc.d
+db: ./db.yaml
+environment: unknown
+class: profiles::base
