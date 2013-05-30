@@ -44,3 +44,16 @@ environment: unknown
 an.example.com: roles::some::role
 another.example.com: roles::prod::web
 ```
+
+```
+$ easyenc-compiler.py /etc/easyenc.d
+---
+an.example.com: 
+  environment: prod
+  class: roles::some::role
+another.example.com: 
+  environment: prod
+  class: roles::prod::web
+default:
+  environment: unknown
+```
