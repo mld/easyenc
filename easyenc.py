@@ -1,38 +1,54 @@
 #!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
+#
 # Author      : Mikael Löfstrand
-# Inspired by : Basil Kurian <basilkurian[at]gmail[dot]com>
 # Home page   : https://github.com/mld/easyenc/
+# Inspired by : Basil Kurian <basilkurian[at]gmail[dot]com>
+#               http://wiki.unixh4cks.com/index.php/Simple_External_Node_Classifier(ENC)_for_puppet_in_python
 
 import yaml
 import sys
 
-if sys.argc >= 3 and sys.argv[1] == '-f':
-  conf  = sys.argv[2]
-  host = sys.argv[3]
-elif sys.argc >= 1:
-  host = sys.argv[1]
+def main():
+  if len(sys.argv) > 2:
+    dbfile  = sys.argv[1]
+    host = sys.argv[2]
+  elif len(sys.argv) > 1:
+    dbfile = "./db.yaml"
+    host = sys.argv[1]
+  else:
+    sys.stderr.write("Error - need to at least supply hostname!\n  {0} [<dbfile>] <fqdn>\n".format(sys.argv[0]))
+    sys.stderr.flush()
+    sys.exit(1)
 
+  db = open(dbfile, "r")
+  doc = yaml.load(db)
+  
+  environment = False
+  classes = False
+  
+  if 'default' in doc:
+    if 'environment' in doc["default"]:
+      environment = doc["default"]["environment"]
+    if 'class' in doc["default"]:
+      classes = doc["default"]["class"]
+  
+  if host in doc:
+    if 'class' in doc[host]:
+      classes = doc[host]["class"]
+    if 'environment' in doc[host]:
+      environment = doc[host]["environment"]
+  
+  if environment and classes:
+    new_yaml={'classes': [classes], 'environment': environment}
+  elif environment:
+    new_yaml={'environment': environment}
+  elif classes:
+    new_yaml={'classes': [classes]}
+  else:
+    new_yaml={}
+  
+  print yaml.dump(new_yaml, explicit_start=True,default_flow_style=False)
 
-db = open("db.yaml", "r")
-doc = yaml.load(db)
-
-environment = False
-classes = False
-
-if doc["default"]:
-  environment = doc["default"]["environment"]
-  classes = doc["default"]["class"]
-
-if host in doc:
-  if "class" in doc[host]:
-    classes = doc[host]["class"]
-  if "environment" in doc[host]:
-    environment = doc[host]["environment"]
-
-#print host, ": ", environment, ", ", classes, ".\n"
-#print "\n"
-
-new_yaml={'classes':[classes],'environment':environment}
-
-print yaml.dump(new_yaml, explicit_start=True,default_flow_style=False)
-
+if __name__ == '__main__':
+  main()
