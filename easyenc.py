@@ -26,27 +26,31 @@ def main():
   
   environment = False
   classes = False
+  parameters = False
   
   if 'default' in doc:
     if 'environment' in doc["default"]:
       environment = doc["default"]["environment"]
     if 'class' in doc["default"]:
       classes = doc["default"]["class"]
+    if 'parameters' in doc["default"]:
+      parameters = doc["default"]["parameters"]
   
   if host in doc:
     if 'class' in doc[host]:
       classes = doc[host]["class"]
     if 'environment' in doc[host]:
       environment = doc[host]["environment"]
+    if 'parameters' in doc[host]:
+      parameters = doc[host]["parameters"]
   
-  if environment and classes:
-    new_yaml={'classes': [classes], 'environment': environment}
-  elif environment:
-    new_yaml={'environment': environment}
-  elif classes:
-    new_yaml={'classes': [classes]}
-  else:
-    new_yaml={}
+  new_yaml = {}
+  if classes:
+    new_yaml['classes'] = classes
+  if environment:
+    new_yaml['environment'] = environment
+  if parameters:
+    new_yaml['parameters'] = parameters
   
   print yaml.dump(new_yaml, explicit_start=True,default_flow_style=False)
 
